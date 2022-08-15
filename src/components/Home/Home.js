@@ -4,8 +4,12 @@ import WelcomeArea from "./WelcomeArea/WelcomeArea";
 import Slider from "./Slider/Slider";
 import CountArea from "./CountArea/CountArea";
 import CommentsArea from "./CommentsArea/CommentsArea";
+import { PropertyContext } from "../../contexts/PropertyContext";
+import { useContext } from "react";
 
-const Home = ({properties}) => {
+const Home = () => {
+    const { properties } = useContext(PropertyContext);
+
     return (
         <div>
             <Slider />

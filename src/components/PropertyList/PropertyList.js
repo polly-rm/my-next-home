@@ -1,6 +1,10 @@
-const { default: Property } = require("./Property/Property")
+import { useContext } from "react";
+import Property from "./Property/Property";
+import { PropertyContext } from "../../contexts/PropertyContext";
 
 const PropertyList = () => {
+    const { properties } = useContext(PropertyContext);
+
     return (
         <div>
             <div className="page-head">
@@ -201,12 +205,12 @@ const PropertyList = () => {
                                 <div className="col-xs-10 page-subheader sorting pl0">
                                     <ul className="sort-by-list">
                                         <li className="active">
-                                            <a href={void(0)} className="order_by_date" data-orderby="property_date" data-order="ASC">
+                                            <a href={void (0)} className="order_by_date" data-orderby="property_date" data-order="ASC">
                                                 Property Date <i className="fa fa-sort-amount-asc"></i>
                                             </a>
                                         </li>
                                         <li className="">
-                                            <a href={void(0)} className="order_by_price" data-orderby="property_price" data-order="DESC">
+                                            <a href={void (0)} className="order_by_price" data-orderby="property_price" data-order="DESC">
                                                 Property Price <i className="fa fa-sort-numeric-desc"></i>
                                             </a>
                                         </li>
@@ -230,14 +234,17 @@ const PropertyList = () => {
                                 </div>
 
                                 <div className="col-xs-2 layout-switcher">
-                                    <a className="layout-list" href={void(0)}> <i className="fa fa-th-list"></i>  </a>
-                                    <a className="layout-grid active" href={void(0)}> <i className="fa fa-th"></i> </a>
+                                    <a className="layout-list" href={void (0)}> <i className="fa fa-th-list"></i>  </a>
+                                    <a className="layout-grid active" href={void (0)}> <i className="fa fa-th"></i> </a>
                                 </div>
                             </div>
 
                             <div className="col-md-12 clear">
                                 <div id="list-type" className="proerty-th">
-                                    <Property />
+                                    {properties.length > 0
+                                        ? properties.map(x => <Property key={x._id} property={x} />)
+                                        : <h3 className="no-properties">No properties yet</h3>
+                                    }
                                 </div>
                             </div>
 
@@ -245,12 +252,12 @@ const PropertyList = () => {
                                 <div className="pull-right">
                                     <div className="pagination">
                                         <ul>
-                                            <li><a href={void(0)}>Prev</a></li>
-                                            <li><a href={void(0)}>1</a></li>
-                                            <li><a href={void(0)}>2</a></li>
-                                            <li><a href={void(0)}>3</a></li>
-                                            <li><a href={void(0)}>4</a></li>
-                                            <li><a href={void(0)}>Next</a></li>
+                                            <li><a href={void (0)}>Prev</a></li>
+                                            <li><a href={void (0)}>1</a></li>
+                                            <li><a href={void (0)}>2</a></li>
+                                            <li><a href={void (0)}>3</a></li>
+                                            <li><a href={void (0)}>4</a></li>
+                                            <li><a href={void (0)}>Next</a></li>
                                         </ul>
                                     </div>
                                 </div>
