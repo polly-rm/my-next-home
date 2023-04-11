@@ -1,0 +1,29 @@
+.property-area-container {
+    background-color: #FCFCFC;
+    padding-bottom: 55px;
+}
+
+.background-white {
+    background-color: #FCFCFC;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.property-descr-height {
+    min-height: 100px;
+}
+
+.tac {
+    width: 10%;
+    margin-top: 8px;
+}
+
+.red {
+    color: red;
+}
+
+.width-max {
+    width: 100%;
+}

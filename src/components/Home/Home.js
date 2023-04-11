@@ -1,5 +1,6 @@
 import WelcomeArea from "./WelcomeArea/WelcomeArea";
 import Slider from "./Slider/Slider";
+import PropertyArea from "./PropertyArea/PropertyArea";
 
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
         <div>
             <Slider />
             <WelcomeArea />
+            <PropertyArea />
         </div>
     );
 }
