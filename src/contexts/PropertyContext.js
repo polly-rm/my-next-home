@@ -63,7 +63,7 @@ export const PropertyProvider = ({
 
     return (
         <PropertyContext.Provider value={{
-            properties, comments, propertyAdd, propertyEdit, propertyRemove, commentAdd, commentRemove
+            properties, comments, setProperties, propertyAdd, propertyEdit, propertyRemove, commentAdd, commentRemove
         }}>
             {children}
         </PropertyContext.Provider>

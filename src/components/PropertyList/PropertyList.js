@@ -8,15 +8,65 @@ import { PropertyContext } from "../../contexts/PropertyContext";
 import Property from "./Property/Property";
 import Pagination from "../Pagination/Pagination";
 
+import * as propertyService from '../../services/propertyService';
+
 
 const PropertyList = () => {
-    const { properties } = useContext(PropertyContext);
+    const { properties, setProperties } = useContext(PropertyContext);
 
     // Sorting
     const [sortByDate, sortByPrice] = useSorting(properties);
 
     // Pagination Config
     const [nPages, currentPage, setCurrentPage, currentProperties] = usePagination(properties);
+
+
+    // Filtering
+    const onFilterSubmit = (e) => {
+        e.preventDefault();
+
+        const {
+            keyWord,
+            city,
+            status,
+            type,
+            area,
+            minPrice,
+            maxPrice
+        } = Object.fromEntries(new FormData(e.target));
+        console.log(city, status);
+
+
+        propertyService.getAll()
+            .then(resultRequest => {
+                const [result, response] = resultRequest;
+                let filteredProperties = result;
+
+                if (keyWord !== '') {
+                    filteredProperties = filteredProperties.filter(x => x.description.includes(keyWord));
+                }
+                if (status !== '-All-') {
+                    filteredProperties = filteredProperties.filter(x => x.status == status);
+                }
+                if (city !== '-All-') {
+                    filteredProperties = filteredProperties.filter(x => x.city == city);
+                }
+                if (type !== '-All-') {
+                    filteredProperties = filteredProperties.filter(x => x.type == type);
+                }
+                if (area !== '') {
+                    filteredProperties = filteredProperties.filter(x => Number(x.area) == Number(area));
+                }
+                if (minPrice !== '') {
+                    filteredProperties = filteredProperties.filter(x => Number(x.price) >= Number(minPrice));
+                }
+                if (maxPrice !== '') {
+                    filteredProperties = filteredProperties.filter(x => Number(x.price) <= Number(maxPrice));
+                }
+
+                setProperties(filteredProperties);
+            });
+    };
 
 
     return (
@@ -39,14 +89,14 @@ const PropertyList = () => {
                             <div className="blog-asside-right pr0">
                                 <div className="panel panel-default sidebar-menu wow fadeInRight animated" >
                                     <div className="panel-heading">
-                                        <h3 className="panel-title">Smart search</h3>
+                                        <h3 className="panel-title">Filter By</h3>
                                     </div>
                                     <div className="panel-body search-widget">
-                                        <form action="" className=" form-inline">
+                                        <form className="form-inline" onSubmit={onFilterSubmit}>
                                             <fieldset>
                                                 <div className="row">
                                                     <div className="col-xs-12">
-                                                        <input type="text" className="form-control" placeholder="Key word" />
+                                                        <input type="text" name="keyWord" className="form-control" placeholder="Key word" />
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -54,8 +104,9 @@ const PropertyList = () => {
                                             <fieldset>
                                                 <div className="row">
                                                     <div className="col-xs-6">
-
-                                                        <select id="lunchBegins" className="selectpicker show-tick" data-live-search="true" data-live-search-style="begins" title="Select Your City">
+                                                        <label htmlFor="property-geo">City:</label>
+                                                        <select id="lunchBegins" name="city" className="selectpicker show-tick">
+                                                            <option>-All-</option>
                                                             <option>Blagoevgrad</option>
                                                             <option>Burgas</option>
                                                             <option>Varna</option>
@@ -86,9 +137,9 @@ const PropertyList = () => {
                                                         </select>
                                                     </div>
                                                     <div className="col-xs-6">
-
-                                                        <select id="basic" className="selectpicker show-tick form-control">
-                                                            <option> -Status- </option>
+                                                        <label htmlFor="property-geo">Status:</label>
+                                                        <select id="basic" name="status" className="selectpicker show-tick form-control">
+                                                            <option>-All-</option>
                                                             <option>Rent </option>
                                                             <option>Sale</option>
                                                         </select>
@@ -99,14 +150,22 @@ const PropertyList = () => {
                                             <fieldset className="padding-5">
                                                 <div className="row">
                                                     <div className="col-xs-6">
-                                                        <label htmlFor="property-geo">Type :</label>
-                                                        <input type="text" className="span2" data-slider-min="0"
-                                                            data-slider-max="600" data-slider-step="5"
-                                                            data-slider-value="[250,450]" id="min-bed" /><br />
+                                                        <label htmlFor="property-geo">Type:</label>
+                                                        <select id="type" name="type" className="selectpicker show-tick form-control">
+                                                            <option>-All-</option>
+                                                            <option>Apartment</option>
+                                                            <option>Studio</option>
+                                                            <option>House</option>
+                                                            <option>Villa</option>
+                                                            <option>Office</option>
+                                                            <option>Garage</option>
+                                                            <option>Storage</option>
+                                                        </select>
+                                                        <br />
                                                     </div>
                                                     <div className="col-xs-6">
                                                         <label htmlFor="property-geo">Property area (m2) :</label>
-                                                        <input type="text" className="span2" data-slider-min="0"
+                                                        <input type="text" name="area" className="span2" data-slider-min="0"
                                                             data-slider-max="600" data-slider-step="5"
                                                             data-slider-value="[50,450]" id="property-geo" /><br />
                                                     </div>
@@ -117,19 +176,20 @@ const PropertyList = () => {
                                                 <div className="row">
                                                     <div className="col-xs-6">
                                                         <label htmlFor="price-range">Min price (EUR) :</label>
-                                                        <input type="text" className="span2" data-slider-min="0"
+                                                        <input type="text" name="minPrice" className="span2" data-slider-min="0"
                                                             data-slider-max="600" data-slider-step="5"
                                                             data-slider-value="[0,450]" id="price-range" /><br />
                                                     </div>
                                                     <div className="col-xs-6">
                                                         <label htmlFor="price-range">Max price (EUR) :</label>
-                                                        <input type="text" className="span2" data-slider-min="0"
+                                                        <input type="text" name="maxPrice" className="span2" data-slider-min="0"
                                                             data-slider-max="600" data-slider-step="5"
                                                             data-slider-value="[0,450]" id="price-range" /><br />
                                                     </div>
                                                 </div>
                                             </fieldset>
-
+                                            <br />
+                                            <button type="submit" className="btn btn-default">Search</button>
                                         </form>
                                     </div>
                                 </div>
