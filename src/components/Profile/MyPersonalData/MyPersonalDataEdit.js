@@ -8,7 +8,7 @@ import { useErrorHandlers } from '../../../hooks/useErrorHandlers';
 
 
 const MyPersonalDataEdit = () => {
-    const { user, profile } = useContext(AuthContext);
+    const { user, profile, setProfile } = useContext(AuthContext);
 
     const [errors, setErrors] = useState({});
     const [currentProfile, setCurrentProfile] = useState({ profile });
@@ -39,13 +39,19 @@ const MyPersonalDataEdit = () => {
                             ...state,
                             [error]: currentError,
                         }));
+                    } else {
+                        profileService.getOne(user.id)
+                            .then(resultRequest => {
+                                const [profileData, response] = resultRequest;
+                                setProfile(profileData);
+                            });
                     }
                 }
             });
     };
 
     // Error Handlers
-    const {minLength, requiredValue, ...errorHandlers} = useErrorHandlers(setErrors, currentProfile);
+    const { minLength, requiredValue, ...errorHandlers } = useErrorHandlers(setErrors, currentProfile);
 
 
     return (

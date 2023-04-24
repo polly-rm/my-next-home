@@ -41,12 +41,24 @@ const EditProperty = () => {
         propertyService.edit(propertyId, propertyData)
             .then(resultRequest => {
                 const [result, response] = resultRequest;
-                propertyEdit(propertyId, result);
+
+                // Get server errors
+                if (!response.ok) {
+                    for (let error of Object.keys(errors)) {
+                        const currentError = result[error];
+                        setErrors(state => ({
+                            ...state,
+                            [error]: currentError,
+                        }));
+                    }
+                } else {
+                    propertyEdit(propertyId, result);
+                }
             });
     };
 
     // Errors Handlers
-    const {minLength, isPositive, isImageUrlValid, isSelected} = useErrorHandlers(setErrors, currentProperty);
+    const { minLength, isPositive, isImageUrlValid, isSelected } = useErrorHandlers(setErrors, currentProperty);
 
     const isFormValid = !Object.values(errors).some(x => x)
         && currentProperty['type'] !== '-Type-'

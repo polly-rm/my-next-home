@@ -31,9 +31,9 @@ export const AuthProvider = ({
         <AuthContext.Provider value={{
             user: auth,
             profile,
+            setProfile,
             userLogin,
-            userLogout,
-            // isAuthenticated: !!auth.accessToken
+            userLogout
         }}>
             {children}
         </AuthContext.Provider>

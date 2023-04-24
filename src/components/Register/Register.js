@@ -45,8 +45,8 @@ const Register = () => {
                     }
                 } else {
                     // Successful registration and login
-                    userLogin(authData);
-                    navigate('/');
+                    // userLogin(authData);
+                    navigate('/login');
                 }
             })
             .catch(() => {

@@ -43,7 +43,7 @@ const PropertyList = () => {
                 let filteredProperties = result;
 
                 if (keyWord !== '') {
-                    filteredProperties = filteredProperties.filter(x => x.description.includes(keyWord));
+                    filteredProperties = filteredProperties.filter(x => x.title.includes(keyWord));
                 }
                 if (status !== '-All-') {
                     filteredProperties = filteredProperties.filter(x => x.status == status);
